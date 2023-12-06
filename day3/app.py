@@ -77,9 +77,30 @@ for partno, coord_list in numbers:
 
 # print(marker_overlap)
 # print(numbers)
-print(not_part_numbers)
-print(part_numbers)
-print(sum(part_numbers))
+
+
+print('part1', sum(part_numbers))
 
 # part 2
 
+part2 = 0
+print(marker_overlap)
+for marker, coords in markers:
+    # print(marker, coords)
+    if marker == '*':
+        partnos = []
+        perimeter = set(marker_perimeter(marker, coords))
+        for partno, mcoords in numbers:
+            if len(set(mcoords).intersection(perimeter)) > 0:
+                partnos.append(partno)
+        
+        if len(partnos) == 2:
+            part2 += int(partnos[0]) * int(partnos[1])
+
+        if len(partnos) > 2:
+            print('more than 2!!!!')
+            raise
+
+print(part2)
+
+            
