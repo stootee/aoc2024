@@ -25,8 +25,7 @@ for x in get_input('input'):
         'cards': cards, 
         'bet': int(bet),
         }
-
-print(HANDS)
+    
 
 def card_score(hand):
         
@@ -63,6 +62,7 @@ def card_counter(cards):
             card_count[c] = 1
 
     return card_count
+
 
 def hand_type(count):
 
@@ -105,21 +105,15 @@ for hand, details in HANDS.items():
     hand_scores[hand_strength].append(cs)
     HANDS[hand]['card_score'] = cs
 
-for k, v in HANDS.items():
-    print(k, v)
-
-for k, v in hand_scores.items():
-    print(k, sorted(v, reverse=True))
 
 winnings = 0
 rank = 0
 for r in range(1, 8):
     for s in sorted(hand_scores[r]):
         rank += 1
-        print(r, s[5], rank, HANDS[s[5]]['bet'])
         winnings += rank * HANDS[s[5]]['bet']
 
-print(winnings)
+print("part1:", winnings)
 
 
         
