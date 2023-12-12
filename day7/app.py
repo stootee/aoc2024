@@ -86,46 +86,62 @@ def hand_type(count):
     else:
         return '????', 0
     
-hand_scores = {
-    1: [],
-    2: [],
-    3: [],
-    4: [],
-    5: [],
-    6: [],
-    7: [],
-}
-
-for hand, details in HANDS.items():
-    count = (card_counter(details['cards']))
-    HANDS[hand]['count'] = count
-
-    type, hand_strength = hand_type(count)
-    HANDS[hand]['type'] = type
-    HANDS[hand]['hand_strength'] = hand_strength
-
-    cs = card_score(hand)
-    hand_scores[hand_strength].append(cs)
-    HANDS[hand]['card_score'] = cs
-
-
-winnings = 0
-rank = 0
-for r in range(1, 8):
-    for s in sorted(hand_scores[r]):
-        rank += 1
-        winnings += rank * HANDS[s[5]]['bet']
-
-print("part1:", winnings)
 
 def joker_test(hand):
     cards = HANDS[hand]['cards']
     best_score = 0
-    print(hand)
+    joker_value = None
     for t in ['A', 'K', 'Q', 'T', '9', '8', '7', '6', '5', '4', '3', '2', '1']:
-        type, score = hand_type(card_counter(cards.replace('J', t)))
-        print(t, type, score)
+        count = card_counter([t if x=='J' else x for x in cards])
+        type, score = hand_type(count)
+
+        if score > best_score:
+            best_score = score
+            None if 'J' not in cards else t
+            joker_value = (None if 'J' not in cards else t, type, score)
+
+    return joker_value
+
+    
+def solver(joker=False):
+    hand_scores = {
+        1: [],
+        2: [],
+        3: [],
+        4: [],
+        5: [],
+        6: [],
+        7: [],
+    }
+
+    for hand, details in HANDS.items():
+        if not joker:
+            count = (card_counter(details['cards']))
+            HANDS[hand]['count'] = count
+
+            type, hand_strength = hand_type(count)
+            HANDS[hand]['type'] = type
+            HANDS[hand]['hand_strength'] = hand_strength
+            joker_value = None
+        else:
+            joker_value, type, hand_strength = joker_test(hand)
+        
+        # print(joker_value, type, hand_strength, hand)
+
+        cs = card_score(hand, joker)
+        hand_scores[hand_strength].append(cs)
+        HANDS[hand]['card_score'] = cs
 
 
-for h in HANDS:
-    joker_test(h)
+    winnings = 0
+    rank = 0
+    for r in range(1, 8):
+        for s in sorted(hand_scores[r]):
+            rank += 1
+            winnings += rank * HANDS[s[5]]['bet']
+
+    return winnings
+
+print("part1:", solver())
+
+print("part2:", solver(joker=True))
