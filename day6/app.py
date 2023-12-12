@@ -27,7 +27,7 @@ for x in get_input('input'):
         }
     
 
-def card_score(hand):
+def card_score(hand, joker=True):
         
     card_strength = {
         'A': 13,
@@ -44,6 +44,9 @@ def card_score(hand):
         '3': 2,
         '2': 1,
     }
+
+    if joker:
+        card_strength['J'] = 0
 
     c_score = ()
     for c in hand:
@@ -115,7 +118,14 @@ for r in range(1, 8):
 
 print("part1:", winnings)
 
+def joker_test(hand):
+    cards = HANDS[hand]['cards']
+    best_score = 0
+    print(hand)
+    for t in ['A', 'K', 'Q', 'T', '9', '8', '7', '6', '5', '4', '3', '2', '1']:
+        type, score = hand_type(card_counter(cards.replace('J', t)))
+        print(t, type, score)
 
-        
 
-
+for h in HANDS:
+    joker_test(h)
