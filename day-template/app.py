@@ -1,5 +1,4 @@
 import os
-from operator import add 
 
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
