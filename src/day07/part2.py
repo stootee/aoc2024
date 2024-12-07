@@ -36,7 +36,6 @@ def run(*args, **kwargs):
     inp = kwargs.get('input')
     ops = ['*', '+', '||']
 
-    v1, i1 = calculate(inp, ['*', '+'])
-    v2, i2 = calculate(i1, ['*', '+', '||'])
+    v1, i1 = calculate(inp, ops)
 
-    print("Part2:", sum([int(ans) for ans, calc in v1]) + sum([int(ans) for ans, calc in v2]))
+    print("Part2:", sum([int(ans) for ans, calc in v1]))
